@@ -10,3 +10,6 @@ up:
 
 down:
     docker compose down -t 1
+
+open:
+    open http://localhost:8012/docs
