@@ -6,4 +6,4 @@ openai
 qdrant-client
 numpy
 python-dotenv
-requests
+ipython

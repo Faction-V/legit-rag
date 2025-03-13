@@ -1,7 +1,7 @@
-version: '3.8'
-
+name: legit-rag
 services:
   qdrant:
+    container_name: qdrant
     image: qdrant/qdrant
     ports:
       - "6333:6333"
@@ -9,28 +9,19 @@ services:
       - qdrant_data:/qdrant/storage
     
   api:
+    container_name: rag-api
+    command: ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--reload"]
     build: .
     ports:
       - "8000:8000"
     environment:
       - QDRANT_URL=http://qdrant:6333
+    volumes:
+      - .:/app
     env_file:
       - .env
-    volumes:
-      - ./logs:/app/logs
     depends_on:
       - qdrant
-
-  viz:
-    build: 
-      context: .
-      dockerfile: src/logging/viz/Dockerfile
-    ports:
-      - "8501:8501"
-    volumes:
-      - ./logs:/app/logs
-    depends_on:
-      - api
 
 volumes:
   qdrant_data: 
