@@ -12,7 +12,9 @@ from src.answer_generator import LLMAnswerGenerator
 from src.rag_workflow import RAGWorkflow
 from src.models import RAGResponse, Document
 
-app = FastAPI()
+app = FastAPI(
+    title="RAG API",
+)
 
 # Initialize vector store
 retriever = QdrantRetriever(
