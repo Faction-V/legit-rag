@@ -1,7 +1,14 @@
-version: '3.8'
+name: rag
+
+networks:
+  cap-multi-compose:
+    name: cap-multi-compose
+  default:
+    name: rag
 
 services:
   qdrant:
+    container_name: qdrant
     image: qdrant/qdrant
     ports:
       - "6333:6333"
@@ -9,18 +16,23 @@ services:
       - qdrant_data:/qdrant/storage
     
   api:
+    command: ["uvicorn", "src.api:app", "--reload", "--proxy-headers", "--host", "0.0.0.0", "--port", "8000"]
+    container_name: rag-api
     build: .
     ports:
-      - "8000:8000"
+      - "8012:8000"
     environment:
       - QDRANT_URL=http://qdrant:6333
-    env_file:
-      - .env
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-not_set}
+      - DEBUG=True
     volumes:
       - ./logs:/app/logs
+      - ./:/app
     depends_on:
       - qdrant
-
+    networks:
+      - cap-multi-compose
+      - default
   viz:
     build: 
       context: .

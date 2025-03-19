@@ -14,13 +14,17 @@ from .components import (
 )
 from .workflow import RAGWorkflow
 from .models import RAGResponse, Document
-
-app = FastAPI()
-
 logger = JsonLogger()
 
 # Load settings
 settings = Settings()
+app = FastAPI(
+    title="RAG API",
+    version="v0.1.0",
+    debug=settings.debug,
+)
+
+
 
 # Initialize retriever
 retriever = VectorRetriever(

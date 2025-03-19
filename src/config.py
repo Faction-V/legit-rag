@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     completion_model: str = "gpt-4-turbo-preview"
     answer_model: str = "gpt-4-turbo-preview"
     embedding_model: str = "text-embedding-3-small"
-    
+    debug: bool = False
     # RAG Settings
     completion_threshold: float = 0.7
     
